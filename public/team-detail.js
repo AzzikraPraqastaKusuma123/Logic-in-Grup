@@ -34,29 +34,40 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
             </div>`;
 
-        const testimonialsHTML = testimonials.length > 1 // Tampilkan slider jika lebih dari 1
+        const testimonialsHTML = testimonials.length > 1
             ? `<div class="swiper testimonial-slider"><div class="swiper-wrapper">${testimonials.map(t => `<div class="swiper-slide">${renderTestimonialCard(t)}</div>`).join('')}</div><div class="swiper-pagination"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div></div>`
             : `<div class="testimonials-grid-static">${testimonials.map(t => renderTestimonialCard(t)).join('')}</div>`;
 
         container.innerHTML = `
           <div class="page-wrapper">
             <main>
-                <section class="portfolio-hero fade-in-section">
-                    <div class="container">
-                         <img src="${member.image_url || '/uploads/default-profile.png'}" alt="${member.name}" class="portfolio-hero-img">
-                         <h1 class="portfolio-hero-name">${member.name}</h1>
-                         <p class="portfolio-hero-role">${member.spec ? member.spec.toUpperCase() + ' ・ ' : ''}${member.role}</p>
-                         <p class="portfolio-hero-headline">${member.headline || `Seorang ${member.role} yang bersemangat dalam menciptakan solusi digital.`}</p>
-                         <div class="portfolio-hero-socials">
-                            <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                            <a href="#"><i class="fab fa-github"></i> GitHub</a>
-                        </div>
-                    </div>
-                </section>
-
                 <div class="container">
                     <div class="team-detail-layout">
-                        <div class="main-content">
+
+                        <aside class="left-column">
+                            <div class="profile-card fade-in-section">
+                                <img src="${member.image_url || '/uploads/default-profile.png'}" alt="${member.name}" class="profile-image">
+                            </div>
+                            ${skills.length > 0 ? `
+                            <div class="sidebar-card fade-in-section">
+                                <h3>Keahlian</h3>
+                                <div class="skills-grid-v2">
+                                    ${skills.map(skill => `<div class="skill-item-v2">${skill}</div>`).join('')}
+                                </div>
+                            </div>
+                            ` : ''}
+                        </aside>
+
+                        <div class="right-column">
+                            <section class="hero-details fade-in-section">
+                                 <h1>${member.name}</h1>
+                                 <p>${member.spec ? member.spec.toUpperCase() + ' ・ ' : ''}${member.role}</p>
+                                 <div class="socials">
+                                    <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                                    <a href="#"><i class="fab fa-github"></i> GitHub</a>
+                                </div>
+                            </section>
+
                             <div class="portfolio-section fade-in-section">
                                 <h2>Tentang Saya</h2>
                                 <div>${member.about || `<p>Informasi detail tentang ${member.name} belum tersedia.</p>`}</div>
@@ -90,17 +101,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                             </div>
                             ` : ''}
                         </div>
-
-                        <aside class="sidebar-content">
-                            ${skills.length > 0 ? `
-                            <div class="sidebar-card fade-in-section">
-                                <h3>Keahlian</h3>
-                                <div class="skills-grid-v2">
-                                    ${skills.map(skill => `<div class="skill-item-v2">${skill}</div>`).join('')}
-                                </div>
-                            </div>
-                            ` : ''}
-                        </aside>
                     </div>
                 </div>
                 <div class="container fade-in-section" style="text-align: center;">
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    setTimeout(() => { entry.target.classList.add('is-visible'); }, index * 100);
+                    setTimeout(() => { entry.target.classList.add('is-visible'); }, index * 150);
                 }
             });
         }, { threshold: 0.1 });
@@ -122,9 +122,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             observer.observe(section);
         });
         
-        if (testimonials.length > 1) { // Sesuaikan dengan logika HTML
+        if (testimonials.length > 1) {
             new Swiper('.testimonial-slider', {
-                slidesPerView: 1, spaceBetween: 30, loop: testimonials.length > 1, // Loop hanya jika item lebih dari 1
+                slidesPerView: 1, spaceBetween: 30, loop: testimonials.length > 1,
                 pagination: { el: '.swiper-pagination', clickable: true },
                 navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
             });
