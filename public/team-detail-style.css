@@ -142,7 +142,7 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
 .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
 
 .logo img {
-    height: 70px; /* LOGO JADI LEBIH BESAR */
+    height: 59px; /* LOGO JADI LEBIH BESAR */
     width: auto;
     display: block;
 }
