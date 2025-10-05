@@ -244,3 +244,8 @@ button, input, select, textarea {
     border-radius: 50%;
     object-fit: cover;
 }
+
+.logo-admin img {
+    height: 70px; /* LOGO ADMIN JADI LEBIH BESAR */
+    width: auto;
+}

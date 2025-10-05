@@ -182,3 +182,9 @@ header {
     .hero h2 { font-size: 2.5rem; }
     .hero p { margin-left: auto; margin-right: auto; }
 }
+
+.logo img {
+    height: 70px; /* LOGO JADI LEBIH BESAR */
+    width: auto;
+    display: block;
+}

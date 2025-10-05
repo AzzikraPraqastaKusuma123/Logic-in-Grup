@@ -140,3 +140,9 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
 /* 8. ANIMASI */
 .fade-in-section { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
 .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+
+.logo img {
+    height: 70px; /* LOGO JADI LEBIH BESAR */
+    width: auto;
+    display: block;
+}
