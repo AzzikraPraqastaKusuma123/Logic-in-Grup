@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logic.In | Admin</title>
+    <link rel="stylesheet" href="admin-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tiny.cloud/1/tifwsb8qjkpb879ezbvi3mido6ixt87i12pas8lq56m5zr0v/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+</head>
+<body>
+
+    <div id="login-screen" class="login-container">
+        <div class="login-box">
+            <h2>Logic.In Admin Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn primary">Login</button>
+                <p id="login-error" class="error-message"></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboard-screen" style="display: none; width: 100%;">
+        <aside id="sidebar">
+            <div class="logo-admin"><h2>Logic.<span class="in">In</span> Admin</h2></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" class="nav-item active" data-page="dashboard"><span class="material-symbols-outlined">dashboard</span> Dashboard</a></li>
+                    <li><a href="#" class="nav-item" data-page="contacts"><span class="material-symbols-outlined">mail</span> Pesan Masuk</a></li>
+                    <li><a href="#" class="nav-item" data-page="team"><span class="material-symbols-outlined">group</span> Kelola Tim</a></li>
+                    <li><a href="#" class="nav-item" data-page="portfolio"><span class="material-symbols-outlined">work</span> Kelola Portofolio</a></li>
+                    <li><a href="#" class="nav-item" data-page="services"><span class="material-symbols-outlined">miscellaneous_services</span> Kelola Layanan</a></li>
+                    <li><a href="#" class="nav-item" data-page="faq"><span class="material-symbols-outlined">quiz</span> Kelola FAQ</a></li>
+                </ul>
+            </nav>
+            <div class="logout-btn-container"><a href="#" id="logout-btn" class="logout-btn"><span class="material-symbols-outlined">logout</span> Logout</a></div>
+        </aside>
+
+        <main id="main-content">
+            <header class="dashboard-header">
+                <h3 id="welcome-message">Selamat Datang, Admin!</h3>
+                <div class="user-profile"><span class="material-symbols-outlined">person</span> <p>Logic.In Manager</p></div>
+            </header>
+
+            <div id="page-content">
+                </div>
+        </main>
+
+        <div id="data-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h4 id="modal-title">Form Data</h4>
+                <form id="modal-form" enctype="multipart/form-data">
+                    <div id="form-fields"></div>
+                    <button type="submit" class="btn primary large">Simpan Data</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+</html>

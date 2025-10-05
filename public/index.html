@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logic.In Freelance - Solusi Digital Inovatif</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="container nav-flex">
+            <h1 class="logo">Logic.<span class="in">In</span></h1>
+            <nav id="main-nav">
+                <ul>
+                    <li><a href="#home" class="nav-link">Beranda</a></li>
+                    <li><a href="#services" class="nav-link">Layanan</a></li>
+                    <li><a href="#why-us" class="nav-link">Keunggulan</a></li>
+                    <li><a href="#portfolio" class="nav-link">Karya</a></li>
+                    <li><a href="#team" class="nav-link">Tim Kami</a></li>
+                    <li><a href="#testimonials" class="nav-link">Testimoni</a></li>
+                    <li><a href="#faq" class="nav-link">FAQ</a></li>
+                    <li><a href="#contact" class="nav-link btn-small primary">Kontak</a></li>
+                </ul>
+            </nav>
+            <button class="menu-toggle" aria-label="Toggle navigation"><span class="material-symbols-outlined">menu</span></button>
+        </div>
+    </header>
+
+    <main>
+
+        <section id="home" class="hero section-padding">
+            <div class="container hero-content">
+                <span class="tagline">Grup Freelance Profesional</span>
+                <h2>Logika yang Cerdas, Desain yang Memukau.</h2>
+                <p>Kami adalah tim ahli dalam Web, Mobile, dan UI/UX yang siap mengubah tantangan bisnis Anda menjadi solusi digital terbaik.</p>
+                <div class="hero-actions">
+                    <a href="#portfolio" class="btn primary">Lihat Portofolio</a>
+                    <a href="#contact" class="btn secondary">Diskusikan Proyek</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="services section-padding">
+            <div class="container text-center">
+                <h3 class="section-title">Layanan Inti Logic.In</h3>
+                <p class="section-subtitle">Kombinasi keahlian teknis dan estetika desain yang terdepan.</p>
+                <div class="services-grid" id="services-grid-container">
+                    </div>
+            </div>
+        </section>
+        
+        <section id="why-us" class="why-us section-padding bg-light">
+            <div class="container">
+                <h3 class="section-title text-center">Mengapa Logic.In Pilihan Tepat?</h3>
+                <div class="why-us-grid">
+                    <div class="feature-item">
+                        <span class="material-symbols-outlined feature-icon">verified_user</span>
+                        <h4>Garansi Kualitas</h4>
+                        <p>Kami menjamin kode yang bersih, terdokumentasi, dan desain yang lulus uji *usability*.</p>
+                    </div>
+                    <div class="feature-item">
+                        <span class="material-symbols-outlined feature-icon">local_shipping</span>
+                        <h4>Tepat Waktu & Anggaran</h4>
+                        <p>Manajemen proyek yang transparan memastikan pengiriman proyek sesuai *timeline* dan anggaran yang disepakati.</p>
+                    </div>
+                    <div class="feature-item">
+                        <span class="material-symbols-outlined feature-icon">handshake</span>
+                        <h4>Komunikasi Intensif</h4>
+                        <p>Kami bekerja sebagai partner, dengan komunikasi rutin dan laporan progres yang jelas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio" class="portfolio section-padding">
+            <div class="container text-center">
+                <h3 class="section-title">Portofolio Pilihan</h3>
+                <p class="section-subtitle">Beberapa karya digital yang telah kami wujudkan.</p>
+                
+                <div class="portfolio-filters">
+                    <button class="filter-btn active" data-filter="*">Semua</button>
+                    <button class="filter-btn" data-filter="Web Dev">Web Dev</button>
+                    <button class="filter-btn" data-filter="Mobile Dev">Mobile Dev</button>
+                    <button class="filter-btn" data-filter="UI/UX">UI/UX</button>
+                </div>
+
+                <div class="portfolio-grid" id="portfolio-grid-container">
+                    </div>
+            </div>
+        </section>
+
+        <section id="team" class="team section-padding bg-light">
+            <div class="container text-center">
+                <h3 class="section-title">Para Ahli di Balik Logic.In</h3>
+                <p class="section-subtitle">Tim solid dengan keahlian beragam yang siap mewujudkan ide digital Anda.</p>
+                <div class="team-slider-wrapper">
+                    <div class="team-grid" id="team-grid-container">
+                        </div>
+                    <button class="slider-nav-btn" id="prev-team" aria-label="Previous slide"><span class="material-symbols-outlined">arrow_back</span></button>
+                    <button class="slider-nav-btn" id="next-team" aria-label="Next slide"><span class="material-symbols-outlined">arrow_forward</span></button>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="testimonials section-padding">
+             <div class="container text-center">
+                <h3 class="section-title">Apa Kata Klien Kami</h3>
+                <div class="slider-container">
+                    <div class="testimonial-slide">
+                        <p class="quote">"Logic.In memberikan hasil yang melebihi ekspektasi kami, terutama pada desain UX yang sangat intuitif. Komunikasinya sangat baik!"</p>
+                        <div class="client-info"><span class="client-name">Ahmad Zulkarnain</span><span class="client-title">CEO, Startup Tech</span></div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <p class="quote">"Pengembangan aplikasi mobile kami berjalan sangat cepat dan tanpa *bug* berarti. Tim developer mereka sangat profesional dan terorganisir."</p>
+                        <div class="client-info"><span class="client-name">Maya Indah</span><span class="client-title">Direktur Pemasaran, E-commerce Besar</span></div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <p class="quote">"Desain web yang mereka buat bukan hanya cantik, tetapi juga logis dan meningkatkan konversi kami secara signifikan. Sangat direkomendasikan!"</p>
+                        <div class="client-info"><span class="client-name">Fajar Pratama</span><span class="client-title">Founder, Platform Edukasi</span></div>
+                    </div>
+                </div>
+                <div class="slider-nav">
+                    <button class="nav-dot active" data-slide="0"></button>
+                    <button class="nav-dot" data-slide="1"></button>
+                    <button class="nav-dot" data-slide="2"></button>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="faq section-padding bg-light">
+            <div class="container">
+                <h3 class="section-title text-center">Pertanyaan yang Sering Diajukan</h3>
+                <div class="faq-accordion" id="faq-accordion-container">
+                    </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact section-padding bg-dark">
+             <div class="container contact-flex">
+                <div class="contact-text">
+                    <h3 class="section-title text-white">Mari Mulai Proyek Anda</h3>
+                    <p class="text-white">Jelaskan ide Anda, dan kami akan memberikan solusi yang logis dan desain yang luar biasa.</p>
+                    <div class="contact-info">
+                        <p><span class="material-symbols-outlined">mail</span> halo@logicin.com</p>
+                        <p><span class="material-symbols-outlined">call</span> +62 812 3456 7890</p>
+                        <p><span class="material-symbols-outlined">location_on</span> Jakarta, Indonesia</p>
+                    </div>
+                </div>
+                <form id="contact-form" class="contact-form">
+                    <div class="form-group"><input type="text" id="name" name="name" placeholder="Nama Lengkap" required></div>
+                    <div class="form-group"><input type="email" id="email" name="email" placeholder="Email Aktif" required></div>
+                    <div class="form-group"><textarea id="message" name="message" rows="4" placeholder="Detail Proyek Anda" required></textarea></div>
+                    <button type="submit" class="btn primary large">Kirim Proposal</button>
+                    <p id="form-message" class="form-message"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <p>&copy; 2024 Logic.In Freelance. All rights reserved.</p>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+    </footer>
+
+   <button id="scrollTopBtn" class="scroll-to-top" title="Kembali ke atas"><span class="material-symbols-outlined">arrow_upward</span></button>
+    <div class="profile-modal" id="profile-modal-container">
+        <div class="profile-modal-content">
+            <button class="close-btn" id="close-profile-modal">&times;</button>
+            <div id="profile-detail-content">
+                </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
