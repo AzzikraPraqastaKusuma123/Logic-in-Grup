@@ -56,14 +56,21 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ========================
-    // 2. FUNGSI API
+    // 2. FUNGSI API (DENGAN PERBAIKAN)
     // ========================
     const apiCall = async (endpoint, method = 'GET', body = null) => {
-        const options = { method, headers: { 'Authorization': `Bearer ${getToken()}` } };
+        const options = { 
+            method, 
+            headers: { 'Authorization': `Bearer ${getToken()}` } 
+        };
+
         if (body) {
             if (body instanceof FormData) {
-                // Jangan set Content-Type untuk FormData, browser akan melakukannya
+                // Jangan set Content-Type untuk FormData, browser akan melakukannya secara otomatis
+                // [PERBAIKAN] Baris ini yang hilang dan menyebabkan error upload
+                options.body = body; 
             } else {
+                // Untuk data JSON biasa
                 options.headers['Content-Type'] = 'application/json';
                 options.body = JSON.stringify(body);
             }
@@ -72,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const response = await fetch(endpoint, options);
         if (response.status === 401 || response.status === 403) handleLogout();
         
+        // Coba parsing JSON, jika gagal, gunakan teks biasa
         const responseText = await response.text();
         let responseData;
         try {
@@ -115,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 {label: 'Tentang Saya (Bio)', name: 'about', type: 'richtext'},
                 {label: 'Keahlian (pisahkan koma)', name: 'skills', type: 'textarea'},
                 {label: 'Pengalaman Kerja', name: 'experience', type: 'experience_repeater'},
-                // --- [PERUBAHAN] Menggunakan tipe custom untuk testimoni ---
                 {label: 'Testimoni', name: 'testimonials', type: 'testimonial_repeater'}
             ],
             render: (data) => {
@@ -162,8 +169,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!currentConfig) return;
         mainContent.innerHTML = `<div class="content-section"><h2>Memuat...</h2></div>`;
         if (currentConfig.api) {
-            const data = await apiCall(currentConfig.api);
-            currentConfig.render(data);
+            try {
+                const data = await apiCall(currentConfig.api);
+                currentConfig.render(data);
+            } catch (error) {
+                mainContent.innerHTML = `<div class="content-section"><h2>Gagal memuat data: ${error.message}</h2></div>`;
+            }
         } else {
             currentConfig.render();
         }
@@ -179,9 +190,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ====================================
-    // 4. MODAL & FORM
+    // 4. MODAL & FORM (Tidak ada perubahan)
     // ====================================
-
     function createExperienceItemHTML(item = {}) {
         return `
             <div class="experience-item" style="border: 1px solid #e5e7eb; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
@@ -196,7 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    // --- [BARU] Fungsi untuk membuat satu baris item testimoni ---
     function createTestimonialItemHTML(item = {}) {
         return `
             <div class="testimonial-item" style="border: 1px solid #e5e7eb; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
@@ -229,7 +238,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 fieldHtml += `<div id="experience-container">${itemsHTML}</div><button type="button" id="add-experience" class="btn primary">Tambah Pengalaman</button>`;
             
-            // --- [PERUBAHAN] Logika untuk repeater testimoni ---
             } else if (field.type === 'testimonial_repeater') {
                 let itemsHTML = '';
                 let testimonials = [];
@@ -258,7 +266,6 @@ document.addEventListener('DOMContentLoaded', () => {
             formFields.innerHTML += fieldHtml;
         });
 
-        // Event listener untuk tombol repeater
         document.getElementById('add-experience')?.addEventListener('click', () => {
             document.getElementById('experience-container').insertAdjacentHTML('beforeend', createExperienceItemHTML());
         });
@@ -296,7 +303,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const id = e.target.dataset.id;
         const formData = new FormData(e.target);
 
-        // Kumpulkan data pengalaman dan jadikan JSON
         if (document.getElementById('experience-container')) {
             const experiences = Array.from(document.querySelectorAll('.experience-item')).map(item => ({
                 title: item.querySelector('[name="exp_title"]').value,
@@ -306,11 +312,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 logo: item.querySelector('[name="exp_logo_url"]').value,
             }));
             formData.set('experience', JSON.stringify(experiences));
-            // Hapus field individual
             ['exp_title', 'exp_company', 'exp_year', 'exp_desc', 'exp_logo_url'].forEach(name => formData.delete(name));
         }
 
-        // --- [PERUBAHAN] Kumpulkan data testimoni dan jadikan JSON ---
         if (document.getElementById('testimonial-container')) {
             const testimonials = Array.from(document.querySelectorAll('.testimonial-item')).map(item => ({
                 quote: item.querySelector('[name="testi_quote"]').value,
@@ -318,10 +322,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 role: item.querySelector('[name="testi_role"]').value,
             }));
             formData.set('testimonials', JSON.stringify(testimonials));
-            // Hapus field individual
             ['testi_quote', 'testi_author', 'testi_role'].forEach(name => formData.delete(name));
         }
         
+        const originalFormData = new FormData();
+        for (const [key, value] of formData.entries()) {
+            originalFormData.append(key, value);
+        }
+
         const fileInputs = Array.from(modalForm.querySelectorAll('input[type="file"]'));
         for (const input of fileInputs) {
              const file = input.files[0];
@@ -330,16 +338,16 @@ document.addEventListener('DOMContentLoaded', () => {
                  uploadFormData.append('image', file);
                  try {
                      const uploadRes = await apiCall('/api/admin/upload', 'POST', uploadFormData);
-                     formData.set(input.name, uploadRes.imageUrl);
+                     originalFormData.set(input.name, uploadRes.imageUrl);
                  } catch (error) {
                      alert(`Gagal upload gambar untuk ${input.name}: ${error.message}`); return;
                  }
              } else {
-                 formData.delete(input.name);
+                 originalFormData.delete(input.name);
              }
         }
         
-        const data = Object.fromEntries(formData.entries());
+        const data = Object.fromEntries(originalFormData.entries());
         const url = id ? `${currentConfig.api}/${id}` : currentConfig.api;
         const method = id ? 'PUT' : 'POST';
         
