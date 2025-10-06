@@ -224,3 +224,76 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
 .testimonial-slider .swiper-slide { height: auto; }
 .testimonial-slider .swiper-button-next, .testimonial-slider .swiper-button-prev { color: var(--accent-color); }
 .testimonial-slider .swiper-pagination-bullet-active { background-color: var(--accent-color); }
+
+/* =======================================================
+   == FINAL PERBAIKAN FOTO PROFIL (GANTI DENGAN INI) ==
+   ======================================================= */
+
+/* Container utama untuk bagian foto. */
+.hero-image-container {
+    order: 1;
+    margin: 2rem auto 0;
+    position: relative;
+    width: 280px;
+    height: 320px; /* Memberi ruang untuk foto naik */
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+@media (min-width: 992px) {
+    .hero-image-container {
+        order: 2; 
+        margin: 0 0 0 auto;
+    }
+}
+
+/* Lingkaran aksen di belakang foto */
+.profile-image-wrapper {
+    position: absolute;
+    bottom: 0;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-color), var(--bg-card));
+    z-index: 1;
+    transition: all 0.4s ease-in-out;
+    animation: waveEffect 12s ease-in-out infinite alternate;
+}
+
+/* Tag <img> itu sendiri */
+.profile-picture {
+    position: relative;
+    width: 280px;
+    height: auto;
+    z-index: 2; /* Tampil di depan lingkaran */
+    transform: translateY(10px);
+    transition: all 0.4s ease-in-out;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+}
+
+
+/* --- Efek Interaktif saat Hover --- */
+.hero-image-container:hover .profile-picture {
+    transform: translateY(0px) scale(1.05); /* Foto terangkat dan membesar */
+}
+
+.hero-image-container:hover .profile-image-wrapper {
+    transform: scale(1.1); /* Lingkaran latar membesar */
+    box-shadow: 0 0 40px var(--accent-glow);
+}
+
+
+/* --- Animasi --- */
+@keyframes waveEffect {
+    from {
+        border-radius: 40% 60% 70% 30% / 40% 50% 50% 60%;
+    }
+    to {
+        border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%;
+    }
+}
+
+/* =======================================================
+   == AKHIR DARI BAGIAN PERBAIKAN ==
+   ======================================================= */

@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    // Menyiapkan struktur HTML dasar terlebih dahulu
+    // Menyiapkan struktur HTML yang sudah diperbaiki
     container.innerHTML = `
         <div class="container page-wrapper">
             <section class="team-hero-layout">
@@ -21,11 +21,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
                 
                 <div class="hero-image-container">
-                    <div class="profile-image-wrapper-3d">
-                        <img src="" alt="Foto Profil" id="member-image" class="profile-image-v2">
+                    <div class="profile-image-wrapper">
+                        <img src="" alt="Foto Profil" id="member-image" class="profile-picture">
                     </div>
                 </div>
-            </section>
+                </section>
             
             <div class="main-content-flow">
                 <section class="portfolio-section" id="about-and-skills-section">
@@ -64,8 +64,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         document.getElementById('member-name').textContent = member.name;
         document.getElementById('member-role').textContent = `${member.spec ? member.spec.toUpperCase() + ' ・ ' : ''}${member.role}`;
-        document.getElementById('member-image').src = member.image_url || '/public/uploads/default-profile.png';
-        document.getElementById('member-image').alt = member.name;
+        
+        // Mengatur gambar profil
+        const memberImage = document.getElementById('member-image');
+        memberImage.src = member.image_url || '/public/uploads/default-profile.png';
+        memberImage.alt = member.name;
+
         document.getElementById('member-about').innerHTML = member.about || `<p>Informasi detail tentang ${member.name} belum tersedia.</p>`;
         
         const skills = member.skills ? member.skills.split(',').map(s => s.trim()).filter(s => s) : [];
