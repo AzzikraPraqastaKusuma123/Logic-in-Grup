@@ -1,13 +1,14 @@
+// public/team-detail.js
 document.addEventListener('DOMContentLoaded', async () => {
     const container = document.getElementById('team-detail-container');
     const memberId = window.location.pathname.split('/').pop();
 
     if (!memberId) {
-        container.innerHTML = '<h1>Anggota Tim tidak ditemukan.</h1>';
+        container.innerHTML = '<h1 style="text-align:center; padding: 5rem; color: red;">Anggota Tim tidak ditemukan.</h1>';
         return;
     }
 
-    // Menyiapkan struktur HTML yang sudah diperbaiki
+    // --- Template HTML awal saat memuat ---
     container.innerHTML = `
         <div class="container page-wrapper">
             <section class="team-hero-layout">
@@ -15,17 +16,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <h1 id="member-name">Memuat Nama...</h1>
                     <p id="member-role">Memuat Peran...</p>
                     <div class="socials" id="member-socials">
-                         <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                         <a href="#"><i class="fab fa-github"></i> GitHub</a>
-                    </div>
+                        </div>
                 </div>
-                
                 <div class="hero-image-container">
                     <div class="profile-image-wrapper">
-                        <img src="" alt="Foto Profil" id="member-image" class="profile-picture">
+                        <img src="/uploads/default-profile.png" alt="Foto Profil" id="member-image" class="profile-picture">
                     </div>
                 </div>
-                </section>
+            </section>
             
             <div class="main-content-flow">
                 <section class="portfolio-section" id="about-and-skills-section">
@@ -55,27 +53,45 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         const response = await fetch(`/api/public/team/${memberId}`);
-        if (!response.ok) throw new Error('Anggota Tim tidak ditemukan.');
+        if (!response.ok) throw new Error('Gagal mengambil data anggota tim.');
         
         const member = await response.json();
-        if (!member) throw new Error('Anggota Tim tidak ditemukan.');
+        if (!member) throw new Error('Data anggota tim tidak ditemukan.');
 
-        document.title = `Portofolio ${member.name} | Logic.In`;
+        document.title = `${member.name} | Logic.In`;
 
+        // --- Mengisi data ke dalam template ---
         document.getElementById('member-name').textContent = member.name;
         document.getElementById('member-role').textContent = `${member.spec ? member.spec.toUpperCase() + ' ・ ' : ''}${member.role}`;
         
-        // Mengatur gambar profil
         const memberImage = document.getElementById('member-image');
-        memberImage.src = member.image_url || '/public/uploads/default-profile.png';
-        memberImage.alt = member.name;
+        memberImage.src = member.image_url || '/uploads/default-profile.png';
+        memberImage.alt = `Foto profil ${member.name}`;
 
+        // --- Logika untuk menampilkan Link Media Sosial (BARU) ---
+        const socialContainer = document.getElementById('member-socials');
+        socialContainer.innerHTML = ''; // Kosongkan placeholder
+        const socials = [
+            { key: 'instagram_url', class: 'fab fa-instagram', label: 'Instagram' },
+            { key: 'linkedin_url', class: 'fab fa-linkedin-in', label: 'LinkedIn' },
+            { key: 'github_url', class: 'fab fa-github', label: 'GitHub' },
+            { key: 'dribbble_url', class: 'fab fa-dribbble', label: 'Dribbble' }
+        ];
+
+        socials.forEach(social => {
+            if (member[social.key]) {
+                socialContainer.innerHTML += `
+                    <a href="${member[social.key]}" target="_blank" rel="noopener noreferrer">
+                        <i class="${social.class}"></i> ${social.label}
+                    </a>`;
+            }
+        });
+        
         document.getElementById('member-about').innerHTML = member.about || `<p>Informasi detail tentang ${member.name} belum tersedia.</p>`;
         
         const skills = member.skills ? member.skills.split(',').map(s => s.trim()).filter(s => s) : [];
         if (skills.length > 0) {
-            const skillsContainer = document.getElementById('member-skills');
-            skillsContainer.innerHTML = skills.map(skill => `<span class="skill-item-v2">${skill}</span>`).join('');
+            document.getElementById('member-skills').innerHTML = skills.map(skill => `<span class="skill-item-v2">${skill}</span>`).join('');
             document.getElementById('skills-section').style.display = 'block';
         }
 
@@ -87,8 +103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (e) { console.error("Gagal parsing data pengalaman:", e); }
 
         if (experience.length > 0) {
-            const experienceContainer = document.getElementById('member-experience');
-            experienceContainer.innerHTML = experience.map(exp => `
+            document.getElementById('member-experience').innerHTML = experience.map(exp => `
                 <div class="timeline-item">
                     <div class="timeline-icon">
                         ${exp.logo ? `<img src="${exp.logo}" alt="${exp.company} logo">` : `<span class="material-symbols-outlined">business_center</span>`}
@@ -136,6 +151,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
     } catch (error) {
-        container.innerHTML = `<h1 style="text-align:center; padding: 5rem; color: var(--text-secondary);">${error.message}</h1>`;
+        container.innerHTML = `<h1 style="text-align:center; padding: 5rem; color: red;">${error.message}</h1>`;
     }
 });

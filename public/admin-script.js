@@ -1,3 +1,4 @@
+// public/admin-script.js
 document.addEventListener('DOMContentLoaded', () => {
     // === ELEMEN DOM ===
     const loginScreen = document.getElementById('login-screen');
@@ -56,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ========================
-    // 2. FUNGSI API (DENGAN PERBAIKAN)
+    // 2. FUNGSI API
     // ========================
     const apiCall = async (endpoint, method = 'GET', body = null) => {
         const options = { 
@@ -66,11 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (body) {
             if (body instanceof FormData) {
-                // Jangan set Content-Type untuk FormData, browser akan melakukannya secara otomatis
-                // [PERBAIKAN] Baris ini yang hilang dan menyebabkan error upload
                 options.body = body; 
             } else {
-                // Untuk data JSON biasa
                 options.headers['Content-Type'] = 'application/json';
                 options.body = JSON.stringify(body);
             }
@@ -79,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const response = await fetch(endpoint, options);
         if (response.status === 401 || response.status === 403) handleLogout();
         
-        // Coba parsing JSON, jika gagal, gunakan teks biasa
         const responseText = await response.text();
         let responseData;
         try {
@@ -122,13 +119,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 {label: 'Headline Singkat', name: 'headline', type: 'textarea'},
                 {label: 'Tentang Saya (Bio)', name: 'about', type: 'richtext'},
                 {label: 'Keahlian (pisahkan koma)', name: 'skills', type: 'textarea'},
+                // --- PERUBAHAN DIMULAI DI SINI ---
+                {label: 'URL Instagram', name: 'instagram_url', type: 'url'},
+                {label: 'URL LinkedIn', name: 'linkedin_url', type: 'url'},
+                {label: 'URL GitHub', name: 'github_url', type: 'url'},
+                {label: 'URL Dribbble', name: 'dribbble_url', type: 'url'},
+                // --- PERUBAHAN BERAKHIR DI SINI ---
                 {label: 'Pengalaman Kerja', name: 'experience', type: 'experience_repeater'},
                 {label: 'Testimoni', name: 'testimonials', type: 'testimonial_repeater'}
             ],
             render: (data) => {
                 const tableRows = data.map(item => `
                     <tr>
-                        <td><img src="${item.image_url || '/assets/default-profile.png'}" class="table-img"></td>
+                        <td><img src="${item.image_url || '/uploads/default-profile.png'}" class="table-img"></td>
                         <td>${item.name}</td>
                         <td>${item.role}</td>
                         <td>
@@ -190,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ====================================
-    // 4. MODAL & FORM (Tidak ada perubahan)
+    // 4. MODAL & FORM
     // ====================================
     function createExperienceItemHTML(item = {}) {
         return `
