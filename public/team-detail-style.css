@@ -1,5 +1,5 @@
 /* =================================================================
-    LOGIC.IN - TEAM DETAIL UI/UX (FINAL VERSION WITH 3D EFFECT V4 - ACCURATE POSITIONING & RESPONSIVE)
+   LOGIC.IN - TEAM DETAIL UI/UX (FINAL VERSION WITH 3D EFFECT V4 - ACCURATE POSITIONING & RESPONSIVE)
    ================================================================= */
 
 /* 1. ROOT VARIABLES & GLOBAL STYLES */
@@ -52,9 +52,8 @@ header {
 .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--accent-color); transition: width .3s ease; }
 .nav-link:hover::after { width: 100%; }
 
-/* Hamburger Menu Toggle */
 .menu-toggle {
-    display: none; /* Sembunyikan di desktop */
+    display: none;
     background: none;
     border: none;
     color: var(--text-primary);
@@ -80,7 +79,6 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
 /* 3. LAYOUT UTAMA HALAMAN */
 .page-wrapper { padding-top: 60px; }
 
-/* HERO (Nama & Foto) */
 .team-hero-layout {
     display: flex;
     flex-direction: column;
@@ -96,14 +94,12 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
     width: 100%;
 }
 
-/* KONTEN UTAMA */
 .main-content-flow {
     display: flex;
     flex-direction: column;
     gap: 5rem;
 }
 
-/* TATA LETAK "TENTANG SAYA" & "KEAHLIAN" */
 #about-and-skills-section {
     display: grid;
     grid-template-columns: 1fr; 
@@ -120,17 +116,15 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
 
 /* 4. GAYA ELEMEN HERO LANJUTAN */
 .hero-details h1 { font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; color: var(--text-primary); margin-bottom: 0.5rem; letter-spacing: 1px; }
-.hero-details p { font-size: 1.1rem; color: var(--accent-color); margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 500; }
-.hero-details .socials { margin-top: 1.5rem; }
-.hero-details .socials a { color: var(--text-secondary); text-decoration: none; margin-right: 1.5rem; font-weight: 500; transition: color 0.3s ease; }
+.hero-details p.role { font-size: 1.1rem; color: var(--accent-color); margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 500; }
+.hero-details .socials { margin-top: 1.5rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem 1.5rem; }
+.hero-details .socials a { color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.3s ease; display: inline-flex; align-items: center; gap: 0.5rem; }
 .hero-details .socials a:hover { color: var(--accent-color); }
-.hero-details .socials .fab { margin-right: 0.5rem; }
-
+.hero-details .socials .fab, .hero-details .socials .fa-brands { margin-right: 0.5rem; font-size: 1.2rem; }
 
 /* =======================================================
    == EFEK FOTO PROFIL ==
    ======================================================= */
-
 .hero-image-container {
     order: 1;
     margin: 2rem auto 0;
@@ -141,7 +135,6 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
     justify-content: center;
     align-items: flex-end;
 }
-
 .profile-image-wrapper {
     position: absolute;
     bottom: 0;
@@ -153,7 +146,6 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
     transition: all 0.4s ease-in-out;
     animation: waveEffect 12s ease-in-out infinite alternate;
 }
-
 .profile-picture {
     position: relative;
     width: 280px;
@@ -163,25 +155,12 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
     transition: all 0.4s ease-in-out;
     filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
 }
-
-.hero-image-container:hover .profile-picture {
-    transform: translateY(0px) scale(1.05);
-}
-
-.hero-image-container:hover .profile-image-wrapper {
-    transform: scale(1.1);
-    box-shadow: 0 0 40px var(--accent-glow);
-}
-
+.hero-image-container:hover .profile-picture { transform: translateY(0px) scale(1.05); }
+.hero-image-container:hover .profile-image-wrapper { transform: scale(1.1); box-shadow: 0 0 40px var(--accent-glow); }
 @keyframes waveEffect {
-    from {
-        border-radius: 40% 60% 70% 30% / 40% 50% 50% 60%;
-    }
-    to {
-        border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%;
-    }
+    from { border-radius: 40% 60% 70% 30% / 40% 50% 50% 60%; }
+    to { border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%; }
 }
-
 
 /* 5. KONTEN LAINNYA */
 .portfolio-section h2 { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 400; color: var(--text-primary); margin-bottom: 2.5rem; position: relative; padding-bottom: 1rem; display: inline-block; }
@@ -203,7 +182,7 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
 .timeline-item h4 { font-weight: 500; color: var(--accent-color); margin-bottom: 1rem; font-size: 1rem; display: block; }
 .timeline-item p { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
 
-/* -- BAGIAN TESTIMONI YANG DIPERBAIKI -- */
+/* -- BAGIAN TESTIMONI -- */
 .testimonial-card-v2 { background: var(--bg-card); backdrop-filter: blur(15px); padding: 2.5rem; border-radius: var(--border-radius); border: 1px solid var(--border-color); border-left: 4px solid var(--accent-color); position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
 .testimonial-card-v2::before { content: '“'; font-size: 8rem; font-weight: 800; color: var(--accent-color); opacity: 0.05; position: absolute; top: -1rem; left: 1rem; line-height: 1; z-index: 0;}
 .testimonial-card-v2 .quote { font-size: 1.15rem; font-style: italic; color: var(--text-primary); line-height: 1.7; margin-bottom: 1.5rem; position: relative; z-index: 1; }
@@ -215,100 +194,93 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
 .testimonial-slider .swiper-button-next, .testimonial-slider .swiper-button-prev { color: var(--accent-color); }
 .testimonial-slider .swiper-pagination-bullet-active { background-color: var(--accent-color); }
 
+/* ============================================= */
+/* STYLING BARU UNTUK PROYEK YANG DIKERJAKAN     */
+/* ============================================= */
+.project-grid-v2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+.project-card-v2 {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.project-card-v2:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2), 0 0 20px var(--accent-glow);
+    border-color: var(--accent-color);
+}
+.project-card-image img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+.project-card-v2:hover .project-card-image img {
+    transform: scale(1.05);
+}
+.project-card-content {
+    padding: 1.25rem;
+}
+.project-card-content h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.project-card-content p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+}
 
 /* 6. RESPONSIVE DESIGN */
 @media (min-width: 992px) {
-    .team-hero-layout {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center; 
-    }
-    .hero-details {
-        order: 1; 
-        flex-basis: 65%; 
-        text-align: left; 
-    }
-    .hero-image-container {
-        order: 2; 
-        margin: 0 0 0 auto;
-    }
-    #about-and-skills-section {
-        grid-template-columns: 2fr 1fr; 
-    }
+    .team-hero-layout { flex-direction: row; justify-content: space-between; align-items: center; }
+    .hero-details { order: 1; flex-basis: 65%; text-align: left; }
+    .hero-details .socials { justify-content: flex-start; }
+    .hero-image-container { order: 2; margin: 0 0 0 auto; }
+    #about-and-skills-section { grid-template-columns: 2fr 1fr; }
 }
 
 @media (max-width: 768px) {
-    .menu-toggle {
-        display: block; /* Tampilkan di mobile */
-    }
+    .menu-toggle { display: block; }
+    #main-nav { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background-color: rgba(18, 20, 24, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border-color); }
+    #main-nav.active { display: flex; }
+    #main-nav ul { flex-direction: column; width: 100%; gap: 0; }
+    #main-nav ul li { width: 100%; text-align: center; }
+    .nav-link { display: block; padding: 1rem; border-bottom: 1px solid var(--border-color); }
+    .nav-link::after { display: none; }
 
-    #main-nav {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background-color: rgba(18, 20, 24, 0.95);
-        backdrop-filter: blur(10px);
-        border-top: 1px solid var(--border-color);
-    }
-    
-    #main-nav.active {
-        display: flex;
-    }
-
-    #main-nav ul {
-        flex-direction: column;
-        width: 100%;
-        gap: 0;
-    }
-
-    #main-nav ul li {
-        width: 100%;
-        text-align: center;
-    }
-    
-    .nav-link {
-        display: block;
-        padding: 1rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    .nav-link::after {
-        display: none;
-    }
-
-    .hero-details h1 {
-        font-size: clamp(2rem, 8vw, 2.5rem);
-    }
-    
-    .team-hero-layout {
-        gap: 1rem; /* Kurangi gap untuk lebih ringkas */
-        padding-bottom: 40px; /* Kurangi padding bawah */
-    }
+    .hero-details h1 { font-size: clamp(2rem, 8vw, 2.5rem); }
+    .team-hero-layout { gap: 1rem; padding-bottom: 40px; }
 
     .hero-image-container {
-        margin-top: -30px; /* Geser ke atas */
-        margin-bottom: 0; /* Pastikan tidak ada margin bawah yang mendorong nama */
-        width: 200px; /* Sesuaikan ukuran jika perlu */
-        height: 240px; /* Sesuaikan ukuran jika perlu */
-        align-items: center; /* Pusatkan vertikal */
+        margin-top: 0; /* Hapus margin atas yang berlebih */
+        margin-bottom: 1rem;
+        width: 200px;
+        height: 200px; /* Buat sama dengan wrapper */
+        align-items: center;
     }
-
     .profile-image-wrapper {
         width: 200px;
         height: 200px;
-        bottom: auto; /* Hapus bottom */
-        top: 0; /* Posisikan di atas */
+        bottom: auto;
+        top: 0;
     }
-
     .profile-picture {
         width: 200px;
-        transform: translateY(0); /* Hapus transform default */
+        transform: translateY(0);
     }
-
-    .main-content-flow, #about-and-skills-section {
-        gap: 2rem;
-    }
+    .main-content-flow, #about-and-skills-section { gap: 2rem; }
 }

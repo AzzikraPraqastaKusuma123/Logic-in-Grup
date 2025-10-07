@@ -1,4 +1,3 @@
-// public/admin-script.js
 document.addEventListener('DOMContentLoaded', () => {
     // === ELEMEN DOM ===
     const loginScreen = document.getElementById('login-screen');
@@ -75,7 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const response = await fetch(endpoint, options);
-        if (response.status === 401 || response.status === 403) handleLogout();
+        if (response.status === 401 || response.status === 403) {
+            handleLogout();
+            throw new Error('Sesi tidak valid, silakan login kembali.');
+        }
         
         const responseText = await response.text();
         let responseData;
@@ -114,17 +116,16 @@ document.addEventListener('DOMContentLoaded', () => {
             fields: [
                 {label: 'Nama', name: 'name', type: 'text'},
                 {label: 'Peran', name: 'role', type: 'text'},
-                {label: 'Spesialisasi (pisahkan koma)', name: 'spec', type: 'text'},
+                {label: 'Spesialisasi', name: 'spec', type: 'text'},
                 {label: 'Gambar Profil', name: 'image_url', type: 'file'},
                 {label: 'Headline Singkat', name: 'headline', type: 'textarea'},
                 {label: 'Tentang Saya (Bio)', name: 'about', type: 'richtext'},
                 {label: 'Keahlian (pisahkan koma)', name: 'skills', type: 'textarea'},
-                // --- PERUBAHAN DIMULAI DI SINI ---
+                {label: 'Tugaskan Proyek', name: 'project_ids', type: 'project_checkboxes'}, 
                 {label: 'URL Instagram', name: 'instagram_url', type: 'url'},
                 {label: 'URL LinkedIn', name: 'linkedin_url', type: 'url'},
                 {label: 'URL GitHub', name: 'github_url', type: 'url'},
                 {label: 'URL Dribbble', name: 'dribbble_url', type: 'url'},
-                // --- PERUBAHAN BERAKHIR DI SINI ---
                 {label: 'Pengalaman Kerja', name: 'experience', type: 'experience_repeater'},
                 {label: 'Testimoni', name: 'testimonials', type: 'testimonial_repeater'}
             ],
@@ -135,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td>${item.name}</td>
                         <td>${item.role}</td>
                         <td>
-                            <button class="btn edit" data-item='${JSON.stringify(item)}'>Edit</button>
+                            <button class="btn edit" data-item-id="${item.id}">Edit</button>
                             <button class="btn danger" onclick="deleteItem('team', ${item.id})">Hapus</button>
                         </td>
                     </tr>`).join('');
@@ -220,11 +221,15 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    function openModal(mode, item = {}) {
+    async function openModal(mode, item = {}) {
         modalTitle.textContent = `${mode === 'add' ? 'Tambah' : 'Edit'} ${currentConfig.title}`;
         formFields.innerHTML = '';
         
+        document.getElementById('project-assignment-section').style.display = 'none';
+
         currentConfig.fields.forEach(field => {
+            if (field.type === 'project_checkboxes') return;
+
             const value = item[field.name] || '';
             let fieldHtml = `<div class="form-group"><label>${field.label}</label>`;
             
@@ -234,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     if (value && typeof value === 'string') experiences = JSON.parse(value);
                     else if (Array.isArray(value)) experiences = value;
-                } catch(e) { console.error("Data pengalaman bukan JSON:", value); }
+                } catch(e) {}
                 
                 if (experiences.length > 0) experiences.forEach(exp => { itemsHTML += createExperienceItemHTML(exp); });
                 else itemsHTML += createExperienceItemHTML();
@@ -247,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     if (value && typeof value === 'string') testimonials = JSON.parse(value);
                     else if (Array.isArray(value)) testimonials = value;
-                } catch (e) { console.error("Data testimoni bukan JSON:", value); }
+                } catch (e) {}
 
                 if (testimonials.length > 0) testimonials.forEach(testi => { itemsHTML += createTestimonialItemHTML(testi); });
                 else itemsHTML += createTestimonialItemHTML();
@@ -258,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 fieldHtml += `<textarea id="richtext-editor" name="${field.name}">${value}</textarea>`;
             } else if (field.type === 'file') {
                 fieldHtml += `<input type="file" name="${field.name}" accept="image/*">`;
-                if(value) fieldHtml += `<img src="${value}" style="max-width: 100px; margin-top: 10px; display: block;">`;
+                if(value) fieldHtml += `<img class="image-preview" src="${value}" style="max-width: 100px; margin-top: 10px; display: block;">`;
             } else if (field.type === 'textarea') {
                 fieldHtml += `<textarea name="${field.name}" rows="5">${value}</textarea>`;
             } else {
@@ -269,12 +274,36 @@ document.addEventListener('DOMContentLoaded', () => {
             formFields.innerHTML += fieldHtml;
         });
 
-        document.getElementById('add-experience')?.addEventListener('click', () => {
-            document.getElementById('experience-container').insertAdjacentHTML('beforeend', createExperienceItemHTML());
-        });
-        document.getElementById('add-testimonial')?.addEventListener('click', () => {
-            document.getElementById('testimonial-container').insertAdjacentHTML('beforeend', createTestimonialItemHTML());
-        });
+        if (currentConfig.api === '/api/admin/team') {
+            document.getElementById('project-assignment-section').style.display = 'block';
+            const checkboxContainer = document.getElementById('project-checkboxes-container');
+            checkboxContainer.innerHTML = 'Memuat proyek...';
+            try {
+                const projects = await apiCall('/api/public/portfolio');
+                if (projects.length > 0) {
+                    checkboxContainer.innerHTML = projects.map(p => `
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="project-${p.id}" name="project_ids" value="${p.id}">
+                            <label for="project-${p.id}">${p.project_name}</label>
+                        </div>
+                    `).join('');
+                    if (mode === 'edit' && item.projects && Array.isArray(item.projects)) {
+                        const assignedIds = item.projects.map(p => p.id);
+                        assignedIds.forEach(id => {
+                            const checkbox = document.getElementById(`project-${id}`);
+                            if (checkbox) checkbox.checked = true;
+                        });
+                    }
+                } else {
+                    checkboxContainer.innerHTML = 'Tidak ada proyek yang tersedia.';
+                }
+            } catch (error) {
+                checkboxContainer.innerHTML = 'Gagal memuat proyek.';
+            }
+        }
+
+        document.getElementById('add-experience')?.addEventListener('click', () => document.getElementById('experience-container').insertAdjacentHTML('beforeend', createExperienceItemHTML()));
+        document.getElementById('add-testimonial')?.addEventListener('click', () => document.getElementById('testimonial-container').insertAdjacentHTML('beforeend', createTestimonialItemHTML()));
 
         formFields.addEventListener('click', (e) => {
             if (e.target.classList.contains('remove-experience')) e.target.closest('.experience-item').remove();
@@ -282,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (document.getElementById('richtext-editor')) {
-            tinymce.remove();
+            tinymce.remove('#richtext-editor');
             tinymce.init({ 
                 selector: '#richtext-editor', plugins: 'lists link image code', 
                 toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | code', 
@@ -305,52 +334,73 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const id = e.target.dataset.id;
         const formData = new FormData(e.target);
+        const data = {};
 
+        // Ubah FormData menjadi objek biasa
+        for (const [key, value] of formData.entries()) {
+            // Cek untuk memastikan kita tidak memasukkan File object kosong
+            if (typeof value !== 'object' || (value instanceof File && value.size > 0)) {
+                data[key] = value;
+            }
+        }
+        
+        // Gabungkan data dari repeater menjadi JSON
         if (document.getElementById('experience-container')) {
-            const experiences = Array.from(document.querySelectorAll('.experience-item')).map(item => ({
+            data.experience = JSON.stringify([...document.querySelectorAll('.experience-item')].map(item => ({
                 title: item.querySelector('[name="exp_title"]').value,
                 company: item.querySelector('[name="exp_company"]').value,
                 year: item.querySelector('[name="exp_year"]').value,
                 desc: item.querySelector('[name="exp_desc"]').value,
                 logo: item.querySelector('[name="exp_logo_url"]').value,
-            }));
-            formData.set('experience', JSON.stringify(experiences));
-            ['exp_title', 'exp_company', 'exp_year', 'exp_desc', 'exp_logo_url'].forEach(name => formData.delete(name));
+            })));
         }
-
         if (document.getElementById('testimonial-container')) {
-            const testimonials = Array.from(document.querySelectorAll('.testimonial-item')).map(item => ({
+            data.testimonials = JSON.stringify([...document.querySelectorAll('.testimonial-item')].map(item => ({
                 quote: item.querySelector('[name="testi_quote"]').value,
                 author: item.querySelector('[name="testi_author"]').value,
                 role: item.querySelector('[name="testi_role"]').value,
-            }));
-            formData.set('testimonials', JSON.stringify(testimonials));
-            ['testi_quote', 'testi_author', 'testi_role'].forEach(name => formData.delete(name));
+            })));
         }
         
-        const originalFormData = new FormData();
-        for (const [key, value] of formData.entries()) {
-            originalFormData.append(key, value);
+        // ==========================================================
+        // PERBAIKAN DI SINI: Hapus field individual dari repeater
+        // ==========================================================
+        delete data.exp_title;
+        delete data.exp_company;
+        delete data.exp_year;
+        delete data.exp_desc;
+        delete data.exp_logo_url;
+        delete data.testi_quote;
+        delete data.testi_author;
+        delete data.testi_role;
+        // ==========================================================
+
+        // Kumpulkan ID proyek yang dicentang
+        if (currentConfig.api === '/api/admin/team') {
+            data.project_ids = [...document.querySelectorAll('input[name="project_ids"]:checked')].map(cb => parseInt(cb.value));
         }
 
-        const fileInputs = Array.from(modalForm.querySelectorAll('input[type="file"]'));
-        for (const input of fileInputs) {
-             const file = input.files[0];
-             if (file && file.size > 0) {
-                 const uploadFormData = new FormData();
-                 uploadFormData.append('image', file);
-                 try {
-                     const uploadRes = await apiCall('/api/admin/upload', 'POST', uploadFormData);
-                     originalFormData.set(input.name, uploadRes.imageUrl);
-                 } catch (error) {
-                     alert(`Gagal upload gambar untuk ${input.name}: ${error.message}`); return;
-                 }
-             } else {
-                 originalFormData.delete(input.name);
-             }
+        // Tangani upload file jika ada
+        const fileInput = modalForm.querySelector('input[type="file"]');
+        if (fileInput && data[fileInput.name] instanceof File) {
+            const uploadFormData = new FormData();
+            uploadFormData.append('image', data[fileInput.name]);
+            try {
+                const uploadRes = await apiCall('/api/admin/upload', 'POST', uploadFormData);
+                data[fileInput.name] = uploadRes.imageUrl; // Ganti file dengan URL
+            } catch (error) {
+                alert(`Gagal upload gambar: ${error.message}`); return;
+            }
+        } else {
+            // Jika tidak ada file baru, gunakan URL dari preview (jika ada) atau hapus
+            const preview = modalForm.querySelector('.image-preview');
+            if (preview && preview.src && fileInput) {
+                data[fileInput.name] = new URL(preview.src).pathname;
+            } else if (fileInput) {
+                delete data[fileInput.name];
+            }
         }
         
-        const data = Object.fromEntries(originalFormData.entries());
         const url = id ? `${currentConfig.api}/${id}` : currentConfig.api;
         const method = id ? 'PUT' : 'POST';
         
@@ -363,13 +413,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    mainContent.addEventListener('click', (e) => {
+    mainContent.addEventListener('click', async (e) => {
         if (e.target.id === 'add-btn') openModal('add');
         if (e.target.classList.contains('edit')) {
-            try {
-                openModal('edit', JSON.parse(e.target.dataset.item));
-            } catch (err) {
-                alert("Data item tidak valid.");
+            const button = e.target;
+            // Jika tombol edit memiliki data-item-id (khusus untuk 'team')
+            if (button.dataset.itemId) {
+                const itemId = button.dataset.itemId;
+                try {
+                    // Ambil data lengkap dari server, termasuk 'projects'
+                    const itemData = await apiCall(`/api/public/team/${itemId}`);
+                    openModal('edit', itemData);
+                } catch(err) {
+                    alert("Gagal mengambil data lengkap untuk diedit.");
+                }
+            } else { // Untuk item lain yang datanya ada di dataset
+                try {
+                    openModal('edit', JSON.parse(button.dataset.item));
+                } catch (err) {
+                    alert("Data item tidak valid.");
+                }
             }
         }
         

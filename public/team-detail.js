@@ -1,9 +1,8 @@
-// public/team-detail.js
 document.addEventListener('DOMContentLoaded', async () => {
     const container = document.getElementById('team-detail-container');
     const memberId = window.location.pathname.split('/').pop();
 
-    if (!memberId) {
+    if (!memberId || isNaN(parseInt(memberId))) {
         container.innerHTML = '<h1 style="text-align:center; padding: 5rem; color: red;">Anggota Tim tidak ditemukan.</h1>';
         return;
     }
@@ -15,8 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <div class="hero-details">
                     <h1 id="member-name">Memuat Nama...</h1>
                     <p id="member-role">Memuat Peran...</p>
-                    <div class="socials" id="member-socials">
-                        </div>
+                    <div class="socials" id="member-socials"></div>
                 </div>
                 <div class="hero-image-container">
                     <div class="profile-image-wrapper">
@@ -44,6 +42,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <h2>Testimoni</h2>
                     <div id="member-testimonials"></div>
                 </section>
+
+                <section class="portfolio-section" id="projects-section" style="display: none;">
+                    <h2>Proyek yang Dikerjakan</h2>
+                    <div class="project-grid-v2" id="member-projects">
+                        </div>
+                </section>
+
                 <div style="text-align: center; margin-top: 4rem;">
                     <a href="/#team" class="back-link">Kembali ke Tim</a>
                 </div>
@@ -68,9 +73,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         memberImage.src = member.image_url || '/uploads/default-profile.png';
         memberImage.alt = `Foto profil ${member.name}`;
 
-        // --- Logika untuk menampilkan Link Media Sosial (BARU) ---
         const socialContainer = document.getElementById('member-socials');
-        socialContainer.innerHTML = ''; // Kosongkan placeholder
+        socialContainer.innerHTML = ''; 
         const socials = [
             { key: 'instagram_url', class: 'fab fa-instagram', label: 'Instagram' },
             { key: 'linkedin_url', class: 'fab fa-linkedin-in', label: 'LinkedIn' },
@@ -102,7 +106,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         } catch (e) { console.error("Gagal parsing data pengalaman:", e); }
 
-        if (experience.length > 0) {
+        if (Array.isArray(experience) && experience.length > 0) {
             document.getElementById('member-experience').innerHTML = experience.map(exp => `
                 <div class="timeline-item">
                     <div class="timeline-icon">
@@ -124,7 +128,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         } catch (e) { console.error("Gagal parsing data testimoni:", e); }
         
-        if (testimonials.length > 0) {
+        if (Array.isArray(testimonials) && testimonials.length > 0) {
             const renderTestimonialCard = (testimonial) => `
                 <div class="testimonial-card-v2">
                     <p class="quote">"${testimonial.quote}"</p>
@@ -148,6 +152,30 @@ document.addEventListener('DOMContentLoaded', async () => {
                     navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
                 });
             }
+        }
+
+        // --- LOGIKA BARU UNTUK MENAMPILKAN PROYEK ---
+        if (member.projects && Array.isArray(member.projects) && member.projects.length > 0) {
+            const projectsContainer = document.getElementById('member-projects');
+            projectsContainer.innerHTML = member.projects.map(project => {
+                // Membersihkan tag HTML dari deskripsi
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = project.description || '';
+                const plainDescription = tempDiv.textContent || tempDiv.innerText || '';
+
+                return `
+                    <a href="/portfolio/${project.id}" class="project-card-v2">
+                        <div class="project-card-image">
+                            <img src="${project.image_url}" alt="${project.project_name}">
+                        </div>
+                        <div class="project-card-content">
+                            <h4>${project.project_name}</h4>
+                            <p>${plainDescription.substring(0, 80)}...</p>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+            document.getElementById('projects-section').style.display = 'block';
         }
 
     } catch (error) {
