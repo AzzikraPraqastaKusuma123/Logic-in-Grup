@@ -28,6 +28,9 @@
                     <li><a href="/#team" class="nav-link">Tim Kami</a></li>
                 </ul>
             </nav>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Buka navigasi">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
         </div>
     </header>
 
@@ -50,5 +53,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="/team-detail.js"></script>
+    <script>
+        // Script untuk hamburger menu
+        const menuToggle = document.getElementById('menu-toggle');
+        const mainNav = document.getElementById('main-nav');
+
+        menuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
