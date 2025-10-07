@@ -1,5 +1,5 @@
 /* =================================================================
-   LOGIC.IN ADMIN - DARK MODE UPGRADE
+   LOGIC.IN ADMIN - DARK MODE UPGRADE & TEXT STYLE UPDATE
    ================================================================= */
 
 /* 1. ROOT VARIABLES (PALET WARNA & FONT)
@@ -90,11 +90,17 @@ button, input, select, textarea {
     margin: 0.25rem 0.5rem;
     border-radius: 0.5rem;
     color: var(--text-secondary);
+    font-weight: 500; /* UPDATE: Teks sedikit lebih tebal */
+    letter-spacing: 0.5px; /* UPDATE: Menambah jarak antar huruf */
     transition: all 0.2s ease-in-out;
 }
 .sidebar-nav .nav-item .material-symbols-outlined { margin-right: 1rem; }
 .sidebar-nav .nav-item:hover { background-color: rgba(255, 255, 255, 0.05); color: var(--text-primary); }
-.sidebar-nav .nav-item.active { background-color: var(--accent-color); color: var(--bg-dark); font-weight: 600; }
+.sidebar-nav .nav-item.active { 
+    background-color: var(--accent-color); 
+    color: var(--bg-dark); 
+    font-weight: 600; 
+}
 
 .logout-btn-container { margin-top: auto; border-top: 1px solid var(--border-color); }
 .logout-btn { display: flex; align-items: center; padding: 1rem 1.5rem; color: var(--text-secondary); }
