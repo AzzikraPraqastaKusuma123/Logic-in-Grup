@@ -116,7 +116,7 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
 
 /* 4. GAYA ELEMEN HERO LANJUTAN */
 .hero-details h1 { font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; color: var(--text-primary); margin-bottom: 0.5rem; letter-spacing: 1px; }
-.hero-details p.role { font-size: 1.1rem; color: var(--accent-color); margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 500; }
+.hero-details .role { font-size: 1.1rem; color: var(--accent-color); margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 500; }
 .hero-details .socials { margin-top: 1.5rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem 1.5rem; }
 .hero-details .socials a { color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.3s ease; display: inline-flex; align-items: center; gap: 0.5rem; }
 .hero-details .socials a:hover { color: var(--accent-color); }
@@ -182,25 +182,92 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
 .timeline-item h4 { font-weight: 500; color: var(--accent-color); margin-bottom: 1rem; font-size: 1rem; display: block; }
 .timeline-item p { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
 
-/* -- BAGIAN TESTIMONI -- */
-.testimonial-card-v2 { background: var(--bg-card); backdrop-filter: blur(15px); padding: 2.5rem; border-radius: var(--border-radius); border: 1px solid var(--border-color); border-left: 4px solid var(--accent-color); position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-.testimonial-card-v2::before { content: '“'; font-size: 8rem; font-weight: 800; color: var(--accent-color); opacity: 0.05; position: absolute; top: -1rem; left: 1rem; line-height: 1; z-index: 0;}
-.testimonial-card-v2 .quote { font-size: 1.15rem; font-style: italic; color: var(--text-primary); line-height: 1.7; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+/* ============================================= */
+/* TAMPILAN TESTIMONI (TETAP SAMA)               */
+/* ============================================= */
+.testimonial-slider-container {
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+.testimonial-slider {
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 50px;
+}
+.testimonial-slider .swiper-slide {
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    max-width: 480px;
+    opacity: 0.4;
+    transition: opacity 0.4s ease;
+}
+.testimonial-slider .swiper-slide-active {
+    opacity: 1;
+}
+.testimonial-card-v2 { 
+    background: var(--bg-card); 
+    backdrop-filter: blur(15px); 
+    padding: 2.5rem; 
+    border-radius: var(--border-radius); 
+    border: 1px solid var(--border-color); 
+    border-left: 4px solid var(--accent-color); 
+    position: relative; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+    height: 100%;
+}
+.testimonial-card-v2::before { 
+    content: '“'; 
+    font-size: 8rem; 
+    font-weight: 800; 
+    color: var(--accent-color); 
+    opacity: 0.05; 
+    position: absolute; 
+    top: -1rem; 
+    left: 1rem; 
+    line-height: 1; 
+    z-index: 0;
+}
+.testimonial-card-v2 .quote { 
+    font-size: 1.1rem; 
+    font-style: italic; 
+    color: var(--text-primary); 
+    line-height: 1.7; 
+    margin-bottom: 1.5rem; 
+    position: relative; 
+    z-index: 1; 
+}
 .testimonial-card-v2 .client-info { text-align: right; }
 .testimonial-card-v2 .client-name { font-weight: 700; color: var(--text-primary); display: block; }
 .testimonial-card-v2 .client-title { color: var(--text-secondary); font-size: 0.9rem; }
-.testimonials-grid-static { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-.testimonial-slider .swiper-slide { height: auto; }
-.testimonial-slider .swiper-button-next, .testimonial-slider .swiper-button-prev { color: var(--accent-color); }
-.testimonial-slider .swiper-pagination-bullet-active { background-color: var(--accent-color); }
+.testimonial-slider .swiper-pagination-bullet {
+    background: rgba(255, 255, 255, 0.5);
+}
+.testimonial-slider .swiper-pagination-bullet-active { 
+    background-color: var(--accent-color); 
+}
 
 /* ============================================= */
-/* STYLING BARU UNTUK PROYEK YANG DIKERJAKAN     */
+/* UPDATE TAMPILAN PROYEK (KEREN & SIMPEL)       */
 /* ============================================= */
-.project-grid-v2 {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
+.project-slider-container {
+    padding: 2rem 0;
+    width: 100%;
+}
+.project-slider {
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 50px; /* Ruang untuk pagination */
+}
+.project-slider .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 340px; /* Lebar setiap kartu proyek */
+    height: auto;
+    transition: transform 0.4s ease, opacity 0.4s ease;
 }
 .project-card-v2 {
     background: var(--bg-card);
@@ -212,10 +279,11 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-soft);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%; 
 }
 .project-card-v2:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2), 0 0 20px var(--accent-glow);
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3), 0 0 25px var(--accent-glow);
     border-color: var(--accent-color);
 }
 .project-card-image img {
@@ -228,21 +296,25 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
 .project-card-v2:hover .project-card-image img {
     transform: scale(1.05);
 }
-.project-card-content {
-    padding: 1.25rem;
+.project-card-content { padding: 1.25rem; }
+.project-card-content h4 { margin-top: 0; margin-bottom: 0.5rem; font-size: 1.1rem; font-weight: 600; }
+.project-card-content p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin: 0; }
+
+/* Sembunyikan panah navigasi */
+.project-slider .swiper-button-next,
+.project-slider .swiper-button-prev {
+    display: none;
 }
-.project-card-content h4 {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    font-size: 1.1rem;
-    font-weight: 600;
+/* Styling untuk pagination agar sesuai tema */
+.project-slider .swiper-pagination-bullet {
+    background: rgba(255, 255, 255, 0.5);
+    transition: background-color 0.3s ease;
 }
-.project-card-content p {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    line-height: 1.5;
-    margin: 0;
+.project-slider .swiper-pagination-bullet-active {
+    background-color: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-glow);
 }
+
 
 /* 6. RESPONSIVE DESIGN */
 @media (min-width: 992px) {
@@ -266,10 +338,10 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
     .team-hero-layout { gap: 1rem; padding-bottom: 40px; }
 
     .hero-image-container {
-        margin-top: 0; /* Hapus margin atas yang berlebih */
+        margin-top: 0; 
         margin-bottom: 1rem;
         width: 200px;
-        height: 200px; /* Buat sama dengan wrapper */
+        height: 200px; 
         align-items: center;
     }
     .profile-image-wrapper {
@@ -283,4 +355,11 @@ footer { background-color: transparent; color: #888; padding: 3rem 0; text-align
         transform: translateY(0);
     }
     .main-content-flow, #about-and-skills-section { gap: 2rem; }
+    
+    .testimonial-slider .swiper-slide {
+        max-width: 90%;
+    }
+    .project-slider .swiper-slide {
+        width: 80%;
+    }
 }
